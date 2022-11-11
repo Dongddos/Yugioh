@@ -11,4 +11,16 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, event, args, Users }) => {
 	const axios = require('axios');
-	const ygo = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php?${args[0]}=${args[1]}`);
+        if (args[0] && args[0] == "name" || args[0] == "id") {
+ return api.sendMessage("Dùng sai lệnh rồi kìa",threadID,messageID)
+         }
+    if (args[1]){
+return api.sendMessage("Dùng sai lệnh rồi kìa",threadID,messageID)
+         }
+      }
+}
+        var all = args.slice(1).join(" ");
+	const ygo = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php?${args[0]}=${all}`);
+        var name = ygo.data.data[0].data.name;
+        
+        
