@@ -26,8 +26,9 @@ module.exports.run = async function({ api, event, args, Users }) {
             var race = ygo.data.data[0].data.race;
             var attribute = ygo.data.data[0].data.attribute;
             var archetype = ygo.data.data[0].data.archetype;
-        }
-    }
-}
+            api.sendMessage(`${des}`, threadID, messageID);
+        };
+    };
+};
         
         
