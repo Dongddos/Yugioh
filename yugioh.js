@@ -9,8 +9,9 @@ module.exports.config = {
 	cooldowns: 5
 };
 
-module.exports.run = async function({ api, event, args, Users }) => {
+module.exports.run = async function({ api, event, args, Users }) {
     const axios = require('axios');
+    const { threadID, messageID } = event;
     if (args[0] && args[0] == "name" || args[0] == "id") {
         if (args[1]) {
             var all = args.slice(1).join(" ");
