@@ -8,7 +8,7 @@ module.exports.config = {
 	usages: "id + [id card] hoặc name + [card name]",
 	cooldowns: 5
 };
-
+ 
 module.exports.run = async function({ api, event, args, Users }) {
     const axios = require('axios');
     const { threadID, messageID } = event;
@@ -26,7 +26,7 @@ module.exports.run = async function({ api, event, args, Users }) {
             var race = ygo.data.data[0].race;
             var attribute = ygo.data.data[0].attribute;
             var archetype = ygo.data.data[0].archetype;
-            api.sendMessage(desc, threadID, messageID);
+            api.sendMessage(`𝒀𝒖𝒈𝒊𝒐𝒉 𝑪𝒂𝒓𝒅 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏\n»Name: ${name}\n»Id: ${id}\n»Type: ${type}\n»Description: \n${desc}\n»Attack: ${atk}\n»Defense: ${def}\n»Level: ${level}\n»Race: ${race}\n»Attribute: ${attribute}\n»Archetype: ${archetype} `, threadID, messageID);
         };
     };
 };
