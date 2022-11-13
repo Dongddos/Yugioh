@@ -1,17 +1,24 @@
 module.exports.config = {
 	name: "yugioh",
-	version: "1.0.1",
+	version: "1.0.0",
 	hasPermssion: 0,
 	credits: "Trọng Đông",
 	description: "Lấy thông tin của một thẻ bài Yugioh",
 	commandCategory: "Game",
 	usages: "id + [id card] hoặc name + [card name]",
-	cooldowns: 5
+	cooldowns: 5,
+    dependencies: {
+        "request": "",
+        "fs": ""
+    }
+    
 };
- 
+
 module.exports.run = async function({ api, event, args, Users }) {
     const axios = require('axios');
-    const { threadID, messageID } = event;
+    const fs = global.nodemodule["fs-extra"];
+    const request = global.nodemodule["request"];
+    let { threadID, messageID } = event;
     if (args[0] && args[0] == "name" || args[0] == "id") {
         if (args[1]) {
             var all = args.slice(1).join(" ");
@@ -33,14 +40,16 @@ module.exports.run = async function({ api, event, args, Users }) {
             var ebay_price = ygo.data.data[0].card_prices[0].ebay_price ? `${ygo.data.data[0].card_prices[0].ebay_price}` : "None";
             var amazon_price = ygo.data.data[0].card_prices[0].amazon_price ? `${ygo.data.data[0].card_prices[0].amazon_price}` : "None";
             var coolstuffinc_price = ygo.data.data[0].card_prices[0].coolstuffinc_price ? `${ygo.data.data[0].card_prices[0].coolstuffinc_price}` : "None";
+            var linkanh = ygo.data.data[0].card_images[0].image_url;
+            request(`${linkanh}`).pipe(fs.createWriteStream('__dirname+'/cache/yugioh.png'));
             if (ygo.data.data[0].linkmarkers) {
                 var linkmarkers = ygo.data.data[0].linkmarkers;
                  var linkmarker = linkmarkers.join(', ');
             } else {
                  var linkmarker = "None";
             };
-            api.sendMessage(`𝒀𝒖𝒈𝒊𝒐𝒉 𝑪𝒂𝒓𝒅 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏\n
-   [🔎]𝐵𝑎𝑠𝑖𝑐 𝑖𝑛𝑓𝑜𝑟𝑚𝑎𝑡𝑖𝑜𝑛[🔍]\n»Name: ${name}\n»Id: ${id}\n»Type: ${type}\n»Description: \n${desc}\n»Attack: ${atk}\n»Defense: ${def}\n»Level: ${level}\n»Race: ${race}\n»Attribute: ${attribute}\n»Archetype: ${archetype}\n»Linkval: ${linkval}\n»Linkmarkers: ${linkmarker}\n»Pendulum Scale: ${scale}\n\n           [💵]𝑃𝑟𝑖𝑐𝑒[💵]\n»Cardmarket Price: ${cardmarket_price}\n»TCG Player Price: ${tcgplayer_price}\n»Ebay Price: ${ebay_price}\n»Amazon Price: ${amazon_price}\n»Coolstuffinc Price: ${coolstuffinc_price}`, threadID, messageID);
+            api.sendMessage({body:`𝒀𝒖𝒈𝒊𝒐𝒉 𝑪𝒂𝒓𝒅 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏\n
+   [🔎]𝐵𝑎𝑠𝑖𝑐 𝑖𝑛𝑓𝑜𝑟𝑚𝑎𝑡𝑖𝑜𝑛[🔍]\n»Name: ${name}\n»Id: ${id}\n»Type: ${type}\n»Description: \n${desc}\n»Attack: ${atk}\n»Defense: ${def}\n»Level: ${level}\n»Race: ${race}\n»Attribute: ${attribute}\n»Archetype: ${archetype}\n»Linkval: ${linkval}\n»Linkmarkers: ${linkmarker}\n»Pendulum Scale: ${scale}\n\n           [💵]𝑃𝑟𝑖𝑐𝑒[💵]\n»Cardmarket Price: ${cardmarket_price}\n»TCG Player Price: ${tcgplayer_price}\n»Ebay Price: ${ebay_price}\n»Amazon Price: ${amazon_price}\n»Coolstuffinc Price: ${coolstuffinc_price}\n\nImage Url: ${linkanh}`,attachment: fs.createReadStream(__dirname + "/cache/yugioh.png")}, event.threadID, event.messageID);
         };
     };
 };
