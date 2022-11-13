@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "yugioh",
-	version: "Alpha test",
+	version: "1.0.1",
 	hasPermssion: 0,
 	credits: "Trọng Đông",
 	description: "Lấy thông tin của một thẻ bài Yugioh",
@@ -28,11 +28,11 @@ module.exports.run = async function({ api, event, args, Users }) {
             var archetype = ygo.data.data[0].archetype ? `${ygo.data.data[0].archetype}` : "None";
             var linkval = ygo.data.data[0].linkval ? `${ygo.data.data[0].linkval}` : "None";
             var scale = ygo.data.data[0].scale ? `${ygo.data.data[0].scale}` : "None";
-            var cardmarket_price = ygo.data.data[0].card_prices.cardmarket_price ? `${ygo.data.data[0].card_prices.cardmarket_price}` : "None";
-            var tcgplayer_price = ygo.data.data[0].card_prices.tcgplayer_price ? `${ygo.data.data[0].card_prices.tcgplayer_price}` : "None";
-            var ebay_price = ygo.data.data[0].card_prices.ebay_price ? `${ygo.data.data[0].card_prices.ebay_price}` : "None";
-            var amazon_price = ygo.data.data[0].card_prices.amazon_price ? `${ygo.data.data[0].card_prices.amazon_price}` : "None";
-            var coolstuffinc_price = ygo.data.data[0].card_prices.coolstuffinc_price ? `${ygo.data.data[0].card_prices.coolstuffinc_price}` : "None";
+            var cardmarket_price = ygo.data.data[0].card_prices[0].cardmarket_price ? `${ygo.data.data[0].card_prices[0].cardmarket_price}` : "None";
+            var tcgplayer_price = ygo.data.data[0].card_prices[0].tcgplayer_price ? `${ygo.data.data[0].card_prices[0].tcgplayer_price}` : "None";
+            var ebay_price = ygo.data.data[0].card_prices[0].ebay_price ? `${ygo.data.data[0].card_prices[0].ebay_price}` : "None";
+            var amazon_price = ygo.data.data[0].card_prices[0].amazon_price ? `${ygo.data.data[0].card_prices[0].amazon_price}` : "None";
+            var coolstuffinc_price = ygo.data.data[0].card_prices[0].coolstuffinc_price ? `${ygo.data.data[0].card_prices[0].coolstuffinc_price}` : "None";
             if (ygo.data.data[0].linkmarkers) {
                 var linkmarkers = ygo.data.data[0].linkmarkers;
                  var linkmarker = linkmarkers.join(', ');
