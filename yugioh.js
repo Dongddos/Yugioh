@@ -43,13 +43,18 @@ module.exports.run = async function({ api, event, args, Users }) {
             var linkanh = ygo.data.data[0].card_images[0].image_url;
             request(`${linkanh}`).pipe(fs.createWriteStream('__dirname+'/cache/yugioh.png'));
             if (ygo.data.data[0].linkmarkers) {
-                var linkmarkers = ygo.data.data[0].linkmarkers;
+                 var linkmarkers = ygo.data.data[0].linkmarkers;
                  var linkmarker = linkmarkers.join(', ');
             } else {
                  var linkmarker = "None";
             };
-            api.sendMessage({body:`𝒀𝒖𝒈𝒊𝒐𝒉 𝑪𝒂𝒓𝒅 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏\n
-   [🔎]𝐵𝑎𝑠𝑖𝑐 𝑖𝑛𝑓𝑜𝑟𝑚𝑎𝑡𝑖𝑜𝑛[🔍]\n»Name: ${name}\n»Id: ${id}\n»Type: ${type}\n»Description: \n${desc}\n»Attack: ${atk}\n»Defense: ${def}\n»Level: ${level}\n»Race: ${race}\n»Attribute: ${attribute}\n»Archetype: ${archetype}\n»Linkval: ${linkval}\n»Linkmarkers: ${linkmarker}\n»Pendulum Scale: ${scale}\n\n           [💵]𝑃𝑟𝑖𝑐𝑒[💵]\n»Cardmarket Price: ${cardmarket_price}\n»TCG Player Price: ${tcgplayer_price}\n»Ebay Price: ${ebay_price}\n»Amazon Price: ${amazon_price}\n»Coolstuffinc Price: ${coolstuffinc_price}\n\nImage Url: ${linkanh}`,attachment: fs.createReadStream(__dirname + "/cache/yugioh.png")}, event.threadID, event.messageID);
+            api.sendMessage({
+                 body:`𝒀𝒖𝒈𝒊𝒐𝒉 𝑪𝒂𝒓𝒅 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏\n
+   [🔎]𝐵𝑎𝑠𝑖𝑐 𝑖𝑛𝑓𝑜𝑟𝑚𝑎𝑡𝑖𝑜𝑛[🔍]\n»Name: ${name}\n»Id: ${id}\n»Type: ${type}\n»Description: \n${desc}\n»Attack: ${atk}\n»Defense: ${def}\n»Level: ${level}\n»Race: ${race}\n»Attribute: ${attribute}\n»Archetype: ${archetype}\n»Linkval: ${linkval}\n»Linkmarkers: ${linkmarker}\n»Pendulum Scale: ${scale}\n\n           [💵]𝑃𝑟𝑖𝑐𝑒[💵]\n»Cardmarket Price: ${cardmarket_price}\n»TCG Player Price: ${tcgplayer_price}\n»Ebay Price: ${ebay_price}\n»Amazon Price: ${amazon_price}\n»Coolstuffinc Price: ${coolstuffinc_price}\n\nImage Url: ${linkanh}`,
+                 attachment: [ 
+                      fs.createReadStream(__dirname + "/cache/yugioh.png")
+                 ]
+            }, event.threadID, event.messageID);
         };
     };
 };
