@@ -41,7 +41,7 @@ module.exports.run = async function({ api, event, args, Users }) {
             var amazon_price = ygo.data.data[0].card_prices[0].amazon_price ? `${ygo.data.data[0].card_prices[0].amazon_price}` : "None";
             var coolstuffinc_price = ygo.data.data[0].card_prices[0].coolstuffinc_price ? `${ygo.data.data[0].card_prices[0].coolstuffinc_price}` : "None";
             var linkanh = ygo.data.data[0].card_images[0].image_url;
-            request(`${linkanh}`).pipe(fs.createWriteStream('__dirname+'/cache/yugioh.png'));
+            request(`${linkanh}`).pipe(fs.createWriteStream(__dirname+'/cache/yugioh.png'));
             if (ygo.data.data[0].linkmarkers) {
                  var linkmarkers = ygo.data.data[0].linkmarkers;
                  var linkmarker = linkmarkers.join(', ');
