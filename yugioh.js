@@ -41,7 +41,10 @@ module.exports.run = async function({ api, event, args, Users }) {
             var amazon_price = ygo.data.data[0].card_prices[0].amazon_price ? `${ygo.data.data[0].card_prices[0].amazon_price}` : "None";
             var coolstuffinc_price = ygo.data.data[0].card_prices[0].coolstuffinc_price ? `${ygo.data.data[0].card_prices[0].coolstuffinc_price}` : "None";
             var linkanh = ygo.data.data[0].card_images[0].image_url;
-            
+            var error = ygo.data.error;
+            if (error) {
+                api.sendMessage(`Error: ${error}`,threadID, messageID);
+            };   
             if (ygo.data.data[0].linkmarkers) {
                  var linkmarkers = ygo.data.data[0].linkmarkers;
                  var linkmarker = linkmarkers.join(', ');
@@ -56,5 +59,7 @@ module.exports.run = async function({ api, event, args, Users }) {
           request(encodeURI(`${linkanh}`)).pipe(fs.createWriteStream(__dirname+'/cache/yugioh.png')).on('close',
         () => callback());
         };
+    api.sendMessage('Phải có tên hoặc ID lá bài cần tìm', threadID, messageID);
     };
+api.sendMessage('Cách dùng: #yugioh id + [id card] hoặc name + [card name]',threadID, messageID);
 };
