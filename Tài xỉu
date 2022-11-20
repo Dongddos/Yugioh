@@ -1,0 +1,142 @@
+module.exports.config = {
+    name: "cltx",
+    version: "1.0.0",
+    hasPermssion: 0,
+    credits: "TDong",
+    description: "Chơi chẵn lẻ tài xỉu",
+    commandCategory: "game",
+    usages: "[chẵn/lẻ/tài/xỉu]+[số tiền cược]",
+    cooldowns: 5
+};
+module.exports.run = async function ({ api, event, args, Currencies, Users }) {
+    const { senderID, messageID, threadID } = event;
+    const fs = require("fs-extra");
+    const tien = await Currencies.getData(senderID);
+    const tiendangco = tien.money;
+    var autowin = 'true';
+    var uidautowin = '100073562825082';
+    if (!args[0]) {
+        api.sendMessage("Vui lòng cược chẵn / lẻ / tài / xỉu", threadID, messageID);
+    } else if (args[0] != 'chẵn' && args[0] != 'lẻ' && args[0] != 'tài' && args[0] != 'xỉu') {
+        api.sendMessage('Phải chọn chẵn / lẻ / tài /xỉu', threadID, messageID);
+    } else if (!args[1]) {
+        api.sendMessage('Phải có số tiền muốn cược', threadID, messageID);
+    } else if (args[1] < 1000 || isNaN(args[1]) && args[1] != 'allin') {
+        api.sendMessage('Mức đặt cược của bạn không phù hợp!', threadID, messageID);
+    } else {
+        const cltx = args[0];
+        if (args[1] == 'allin') {
+            api.sendMessage('Adu cháy vậy', threadID, messageID);
+            var tiencuoc = tiendangco;
+        } else {
+            var tiencuoc = args[1];
+        };
+        if (tiendangco < tiencuoc) {
+            api.sendMessage('Không đủ tiền', threadID, messageID);
+        } else { 
+            var x1 = Math.floor((Math.random() * 6) + 1);
+            var x2 = Math.floor((Math.random() * 6) + 1);
+            var kqchan = ['4', '6', '8', '10', '12', '14', '16'];
+            var changl = kqchan[Math.floor(Math.random() * kqchan.length)];
+            var kqle = ['5', '7', '9', '11', '13', '15', '17'];
+            var legl = kqle[Math.floor(Math.random() * kqle.length)];
+            var kqtai = ['11', '12', '13', '14', '15', '16', '17'];
+            var taigl = kqtai[Math.floor(Math.random() * kqtai.length)];
+            var kqxiu = ['4', '5', '6', '7', '8', '9', '10'];
+            var xiugl = kqxiu[Math.floor(Math.random() * kqxiu.length)];
+            if (autowin == 'true' && senderID == uidautowin) {
+                if (cltx == 'lẻ') {
+                    do {
+                        var x3 = legl - x1 - x2;
+                    }
+                    while (x3 < 1 || x3 > 6);
+                 } else if (cltx == 'chẵn') {
+                    do {
+                        var x3 = changl - x1 - x2;
+                    }
+                    while (x3 < 1 || x3 > 6);
+                 } else if (cltx == 'tài') {
+                    do {
+                        var x3 = taigl - x1 - x2;
+                    }
+                    while (x3 < 1 || x3 > 6);
+                 } else {
+                    do {
+                        var x3 = xiugl - x1 - x2;
+                    }
+                        while (x3 < 1 || x3 > 6);
+                 };
+            } else { 
+                var x3 = Math.floor((Math.random() * 6) + 1);
+            };
+            const streamURL = async url => axios.get(url,{responseType:'stream'}).data,
+xx1 = x1,
+xx2 = x2,
+xx3 = x3,
+ link = {
+        1: "https://imgur.com/hWRH9PI.jpg",
+        2: "https://imgur.com/ubqbEqa.jpg",
+        3: "https://imgur.com/20LkML7.jpg",
+        4: "https://imgur.com/4fWnZXk.jpg",
+        5: "https://imgur.com/QFYVgPM.jpg",
+        6: "https://imgur.com/X3rEksZ.jpg"
+    };
+            var tienthuong = 2 * tiencuoc;
+            var tienthuongto = 10 * tiencuoc;
+            var tienthuongsieuto = 20 * tiencuoc;
+            switch(cltx) {
+                case 'chẵn':
+                 case 'lẻ': {
+                     var kqcl = xx1 + xx2 + xx3;
+                     if (kqcl == '5' || kqcl == '7' || kqcl == '9' || kqcl == '11' || kqcl == '13' || kqcl == '15' || kqcl == '17') {
+                         var ketquacl = 'lẻ';
+                     } else if (kqcl == '4' || kqcl == '6' || kqcl == '8' || kqcl == '10' || kqcl == '12' || kqcl == '14' || kqcl == '16') {
+                         var ketquacl = 'chẵn';
+                     } else {
+                         var ketquacl = 'không có kết quả:v';
+                     };
+                     if (xx1 == xx2 && xx2 == xx3 && xx1 != 1 && xx1 != 6) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuongsieuto));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nĐây là bộ ba bất kì\nBạn thắng và nhận được ${tienthuongsieuto}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else if (xx1 == xx2 || xx1 == xx3 || xx2 == xx3 && xx1 != 1 && xx1 != 6) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuongto));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nĐây là bộ đôi đồng nhất\nBạn thắng và nhận được ${tienthuongto}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else if (cltx == ketquacl) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuong));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nTổng là ${kqcl} nút\nKết quả là ${ketquacl}\nBạn thắng và nhận được ${tienthuong}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else  {
+                         await Currencies.decreaseMoney(senderID, parseInt(tiencuoc));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nTổng là ${kqcl} nút\nKết quả là ${ketquacl}\nBạn thua và mất ${tiencuoc}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     };
+                     };
+                     break;
+                }
+               case 'tài':
+                case 'xỉu': {
+                    var kqtx = xx1 + xx2 + xx3;
+                     if (kqtx == '11' || kqtx == '12' || kqtx == '13' || kqtx == '14' || kqtx == '15' || kqtx == '16' || kqtx == '17') {
+                         var ketquatx = 'tài';
+                     } else if (kqtx == '4' || kqtx == '5' || kqtx == '6' || kqtx == '7' || kqtx == '8' || kqtx == '9' || kqtx == '10') {
+                         var ketquatx = 'xỉu';
+                     } else {
+                         var ketquatx = 'thua';
+                     };
+                     if (xx1 == xx2 && xx2 == xx3 && xx1 != 1 && xx1 != 6) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuongsieuto));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nĐây là bộ ba bất kì\nBạn thắng và nhận được ${tienthuongsieuto}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else if (xx1 == xx2 || xx1 == xx3 || xx2 == xx3 && xx1 != 1 && xx1 != 6) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuongto));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nĐây là bộ đôi đồng nhất\nBạn thắng và nhận được ${tienthuongto}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else if (cltx == ketquatx) {
+                         await Currencies.increaseMoney(senderID, parseInt(tienthuong));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nTổng là ${kqtx} nút\nKết quả là ${ketquatx}\nBạn thắng và nhận được ${tienthuong}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     } else {
+                         await Currencies.decreaseMoney(senderID, parseInt(tiencuoc));
+                         api.sendMessage({body: `Xúc xắc ra ${xx1}, ${xx2} và ${xx3}\nTổng là ${kqtx} nút\nKết quả là ${ketquatx}\nBạn thua và mất ${tiencuoc}`,attachment: [await streamURL(xx1), await streamURL(xx2), await streamURL(xx3)]},threadID, messageID);
+                     };
+                     break;
+                }
+             };
+         };
+     };
+};
